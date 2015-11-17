@@ -82,13 +82,13 @@ class Prerequisites(generate_load.Prerequisites):
         for volume in volumes_list:
             vlm = self.cinderclient.volumes.create(display_name=volume['name'],
                                                    size=volume['size'])
-            self.wait_for_volume(volume['name'])
+            self.wait_for_volumes(volume['name'])
             if 'server_to_attach' in volume:
                 self.novaclient.volumes.create_server_volume(
                     server_id=self.get_vm_id(volume['server_to_attach']),
                     volume_id=vlm.id,
                     device=volume['device'])
-            self.wait_for_volume(volume['name'])
+            self.wait_for_volumes(volume['name'])
             vms = self.update_vm_status()
             inst_name = None
             for vol in self.config.cinder_volumes:
